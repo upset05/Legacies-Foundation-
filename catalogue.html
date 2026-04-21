@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Catalogue — Coming Soon</title>
+  <meta name="description" content="Our exclusive catalogue of African fashion wear is currently being curated. It will arrive shortly." />
+
+  <!-- Preconnect and fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/Conding2/Legacies-logo-/refs/heads/main/Part_3.jpeg" type="image/jpeg">
+
+  <style>
+    /* ══════════════════════════════════
+       DESIGN TOKENS (Mirrored from Home)
+    ══════════════════════════════════ */
+    :root {
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    /* Light */
+    body {
+      --bg:              #ffffff;
+      --bg-secondary:    #f5f5f7;
+      --text-primary:    #1d1d1f;
+      --text-secondary:  #6e6e73;
+      --text-tertiary:   #86868b;
+      --border:          rgba(0, 0, 0, 0.07);
+      --border-med:      rgba(0, 0, 0, 0.12);
+      --nav-bg:          rgba(255, 255, 255, 0.80);
+      --nav-border:      rgba(0, 0, 0, 0.10);
+      --link:            #0071e3;
+      --toggle-track:    #e5e5ea;
+    }
+
+    /* Dark */
+    body[data-theme="dark"] {
+      --bg:              #080808;
+      --bg-secondary:    #101010;
+      --text-primary:    #ffffff;
+      --text-secondary:  #a1a1a6;
+      --text-tertiary:   #6b6b70;
+      --border:          rgba(255, 255, 255, 0.07);
+      --border-med:      rgba(255, 255, 255, 0.13);
+      --nav-bg:          rgba(8, 8, 8, 0.84);
+      --nav-border:      rgba(255, 255, 255, 0.08);
+      --link:            #2997ff;
+      --toggle-track:    #3a3a3c;
+    }
+
+    /* ══════════════════════════════════
+       BASE RESET
+    ══════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      opacity: 0;
+      animation: page-in 0.4s ease forwards;
+    }
+    @keyframes page-in { to { opacity: 1; } }
+    body.themed { transition: background 0.35s ease, color 0.35s ease; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ══════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 48px;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease, background 0.35s ease;
+    }
+    .nav.scrolled { border-bottom-color: var(--nav-border); }
+    .nav-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: opacity 0.2s ease;
+    }
+    .nav-logo-img {
+      width: 22px; height: 22px; border-radius: 5px; object-fit: cover; transition: box-shadow 0.35s ease;
+    }
+    .nav-logo-name { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+    .nav-links { display: flex; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-links a { font-size: 13px; color: var(--text-secondary); padding: 5px 14px; border-radius: 7px; transition: color 0.2s ease, transform 0.25s ease-out; display: inline-block; }
+    .nav-links a:hover { color: var(--text-primary); transform: translateY(-3px); }
+    .nav-links a.active { color: var(--text-primary); font-weight: 500; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .theme-pill {
+      width: 38px; height: 22px; border-radius: 999px; background: var(--toggle-track); border: none; cursor: pointer; position: relative; transition: background 0.3s ease;
+    }
+    .theme-pill::after {
+      content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.28); transition: transform 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    body[data-theme="dark"] .theme-pill::after { transform: translateX(16px); }
+
+    /* ══════════════════════════════════
+       COMING SOON SPLASH
+    ══════════════════════════════════ */
+    .splash {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 22px;
+      text-align: center;
+      position: relative;
+    }
+
+    .splash-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fade-up 0.85s ease forwards;
+    }
+
+    .splash-title {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      max-width: 800px;
+      color: var(--text-primary);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fade-up 0.85s ease 0.15s forwards;
+    }
+    
+    .splash-title .blur-reveal {
+      color: var(--text-secondary);
+      font-weight: 400;
+      display: block;
+      margin-top: 10px;
+      opacity: 0.8;
+    }
+
+    .splash-desc {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 480px;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fade-up 0.85s ease 0.3s forwards;
+    }
+
+    .splash-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 28px;
+      background: var(--text-primary);
+      color: var(--bg);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fade-up 0.85s ease 0.45s forwards;
+      transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    @keyframes fade-up { to { opacity: 1; transform: translateY(0); } }
+
+    /* ══════════════════════════════════
+       BACKGROUND IMAGES
+    ══════════════════════════════════ */
+    .splash-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: var(--bg);
+    }
+    .splash-bg img {
+      position: absolute;
+      width: 60vw;
+      height: 100vh;
+      object-fit: cover;
+      filter: blur(12px) saturate(1.2); /* Reduced blur */
+      opacity: 0.9; /* Increased opacity */
+      transform: scale(1.15); /* Hide blur edges */
+      transition: opacity 0.5s ease, filter 0.5s ease;
+    }
+    .splash-bg img:nth-child(1) {
+      left: 0; top: 0;
+      mask-image: linear-gradient(to right, black 55%, transparent);
+      -webkit-mask-image: linear-gradient(to right, black 55%, transparent);
+    }
+    .splash-bg img:nth-child(2) {
+      right: 0; top: 0;
+      mask-image: linear-gradient(to left, black 55%, transparent);
+      -webkit-mask-image: linear-gradient(to left, black 55%, transparent);
+    }
+    
+    .splash-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      opacity: 0.3; /* Let more image through */
+      transition: background 0.35s ease;
+    }
+
+    body[data-theme="dark"] .splash-bg img {
+      opacity: 0.7;
+      filter: blur(16px) saturate(0.9);
+    }
+    body[data-theme="dark"] .splash-bg-overlay {
+      opacity: 0.45;
+    }
+
+    .splash {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 22px;
+      text-align: center;
+    }
+
+    /* Utilities */
+    .theme-pill, .nav-links a { transition-property: opacity, transform, background, color, border-color; transition-duration: 0.22s; }
+  </style>
+</head>
+
+<body data-theme="dark">
+
+  <!-- Navigation -->
+  <nav class="nav" id="navBar" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Legacies Global home">
+        <img src="https://raw.githubusercontent.com/Conding2/Legacies-logo-/refs/heads/main/Part_3.jpeg" alt="" class="nav-logo-img" />
+        <span class="nav-logo-name">Legacies Global</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="catalogue.html" class="active">Catalogue</a></li>
+        <li><a href="Legacies Career.html">Careers</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <button class="theme-pill" id="themeToggle" aria-label="Toggle theme"></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="splash-bg" aria-hidden="true">
+    <img src="IMG_9565.PNG" alt="" />
+    <img src="IMG_9566.PNG" alt="" />
+    <div class="splash-bg-overlay"></div>
+  </div>
+
+  <main class="splash">
+    <p class="splash-label">Catalogue</p>
+    <h1 class="splash-title">
+      Patience is a craft.<br/>
+      <span class="blur-reveal">The collection is arriving.</span>
+    </h1>
+    <p class="splash-desc">
+      Our exclusive catalogue of African editorial wear is currently being curated behind closed doors. The veil will be lifted very soon.
+    </p>
+    <a href="index.html" class="splash-cta" id="returnBtn">
+      Return Home
+    </a>
+  </main>
+
+  <script>
+    (() => {
+      const body = document.body;
+      const themeBtn = document.getElementById('themeToggle');
+      const navBar = document.getElementById('navBar');
+
+      /* ── Theme ── */
+      function getSaved() {
+        const s = localStorage.getItem('lg-theme');
+        if (s) return s;
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+
+      function applyTheme(t, save) {
+        body.setAttribute('data-theme', t);
+        if (save) localStorage.setItem('lg-theme', t);
+        if (!body.classList.contains('themed')) {
+          setTimeout(() => body.classList.add('themed'), 50);
+        }
+      }
+
+      applyTheme(getSaved(), false);
+
+      window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+        if (!localStorage.getItem('lg-theme')) {
+          applyTheme(e.matches ? 'light' : 'dark', false);
+        }
+      });
+
+      themeBtn.addEventListener('click', () => {
+        applyTheme(body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+      });
+
+      /* ── Scroll ── */
+      window.addEventListener('scroll', () => {
+        navBar.classList.toggle('scrolled', window.scrollY > 4);
+      }, { passive: true });
+
+    })();
+  </script>
+</body>
+</html>
