@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://legaciesglobal.com/sitemap.xml
