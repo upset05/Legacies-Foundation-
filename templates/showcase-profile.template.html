@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{PROFILE_TITLE}}</title>
+  <meta name="description" content="{{PROFILE_DESCRIPTION}}">
+  <link rel="canonical" href="{{PROFILE_CANONICAL}}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{PROFILE_CANONICAL}}">
+  <meta property="og:title" content="{{PROFILE_TITLE}}">
+  <meta property="og:description" content="{{PROFILE_DESCRIPTION}}">
+  <meta property="og:image" content="https://legacies.global/assets/img/og-legacies-global.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{PROFILE_CANONICAL}}">
+  <meta property="twitter:title" content="{{PROFILE_TITLE}}">
+  <meta property="twitter:description" content="{{PROFILE_DESCRIPTION}}">
+  <meta property="twitter:image" content="https://legacies.global/assets/img/og-legacies-global.jpg">
+  <!-- SITE_HEAD_SHARED -->
+  <script type="application/ld+json">{{PROFILE_SCHEMA}}</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://legacies.global/"},
+      {"@type": "ListItem", "position": 2, "name": "Showcases", "item": "https://legacies.global/showcases"},
+      {"@type": "ListItem", "position": 3, "name": {{PROFILE_NAME_JSON}}, "item": "{{PROFILE_CANONICAL}}"}
+    ]
+  }
+  </script>
+</head>
+<body data-theme="dark" data-shared-theme="true">
+  <!-- SITE_HEADER -->
+  <main class="editorial-main">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/showcases">Showcases</a> / {{PROFILE_NAME}}</p>
+    <section class="content-hero">
+      <p class="editorial-kicker">Legacies Showcases · Featured piece</p>
+      <h1 class="editorial-title">{{PROFILE_PIECE}}</h1>
+      <p class="editorial-lede">{{PROFILE_CRAFT}} · {{PROFILE_LOCATION}} · Created by {{PROFILE_NAME}}</p>
+    </section>
+    <section class="editorial-section" aria-label="Featured piece story">
+      <h2>The piece and its story</h2>
+      {{PROFILE_STORY}}
+    </section>
+    <section class="editorial-section">
+      <h2>Gallery</h2>
+      <div class="profile-gallery">{{PROFILE_GALLERY}}</div>
+    </section>
+    <section class="editorial-section">
+      <h2>The maker and the collaboration</h2>
+      <p>{{PROFILE_COLLABORATION}}</p>
+      <p>Learn about our <a href="/across-borders">cross-border fashion collaboration model</a> or <a href="/onboarding">apply to partner with Legacies Global</a>.</p>
+    </section>
+    <section class="editorial-section">
+      <h2>Continue exploring</h2>
+      <p>Discover more makers in <a href="/showcases">Legacies Showcases</a> and read about how we connect local work with a global audience.</p>
+    </section>
+  </main>
+  <!-- SITE_FOOTER -->
+  <!-- SITE_SCRIPT -->
+</body>
+</html>

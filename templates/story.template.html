@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ARTICLE_TITLE}}</title>
+  <meta name="description" content="{{ARTICLE_DESCRIPTION}}">
+  <link rel="canonical" href="{{ARTICLE_CANONICAL}}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{ARTICLE_CANONICAL}}">
+  <meta property="og:title" content="{{ARTICLE_TITLE}}">
+  <meta property="og:description" content="{{ARTICLE_DESCRIPTION}}">
+  <meta property="og:image" content="https://legacies.global/assets/img/og-legacies-global.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ARTICLE_TITLE}}">
+  <meta name="twitter:description" content="{{ARTICLE_DESCRIPTION}}">
+  <meta name="twitter:image" content="https://legacies.global/assets/img/og-legacies-global.jpg">
+  <script type="application/ld+json">{{ARTICLE_SCHEMA}}</script>
+  <!-- SITE_HEAD_SHARED -->
+</head>
+<body data-theme="dark" data-shared-theme="true">
+  <!-- SITE_HEADER -->
+  <main class="editorial-main">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/stories">Stories</a> / {{ARTICLE_TITLE}}</p>
+    <article>
+      <header class="content-hero">
+        <p class="editorial-kicker">{{ARTICLE_CATEGORY}}</p>
+        <h1 class="editorial-title">{{ARTICLE_TITLE}}</h1>
+        <p class="editorial-lede">{{ARTICLE_DESCRIPTION}}</p>
+        <time datetime="{{ARTICLE_DATE}}">{{ARTICLE_DATE}}</time>
+      </header>
+      <div class="editorial-section">{{ARTICLE_BODY}}</div>
+    </article>
+  </main>
+  <!-- SITE_FOOTER -->
+  <!-- SITE_SCRIPT -->
+</body>
+</html>
