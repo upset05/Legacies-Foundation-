@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /onboarding/thank-you
 
 Sitemap: https://legacies.global/sitemap.xml

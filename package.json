@@ -1,0 +1,17 @@
+{
+  "name": "legacies-global-static-site",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "build": "node scripts/build-site.mjs",
+    "preview": "npm run build && node scripts/preview-site.mjs"
+  },
+  "devDependencies": {
+    "cities.json": "^1.1.66",
+    "country-list": "^2.4.1",
+    "sharp": "^0.35.5"
+  }
+}
