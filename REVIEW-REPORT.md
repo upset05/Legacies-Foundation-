@@ -160,7 +160,8 @@ The worktree contained other modified and untracked files before this refinement
 
 - Confirmed `legacies.global` is an enabled Hostinger Node.js website and checked its document root before replacing the existing site files. Kept DNS and mail records unchanged.
 - Built and uploaded a source archive that excluded `dist`, `node_modules`, `.git`, `.hostinger` and environment/credential files. Hostinger used Node.js 22, Express, `server.js`, `npm run build` and `dist/`.
-- Hostinger build `01a1a811-582a-7357-9a22-45ca4dfd6e61` completed and published successfully: 13 pages generated, 0 live Showcase profiles, 0 npm vulnerabilities. The Hostinger server and CDN cache was cleared after publish.
+- The first archive deployment completed, but the Git auto-deploy triggered by the push initially used Hostinger's unset defaults (`appType: other`, no output directory), making `/catalogue` and `/careers` return 404. Re-deployed the pushed `main` commit with explicit Express settings and verified the stored settings now read Node.js 22, Express, `dist`, `server.js`, `build`, and npm.
+- Final Hostinger build `01a1a81d-0b98-720f-be33-b369017d22b8` completed from `upset05/Legacies-Foundation-` `main` at commit `b8f811c`. It generated 13 pages, 0 live Showcase profiles and 0 npm vulnerabilities. The Hostinger server and CDN cache was cleared after the final publish. Git auto-deployment remains enabled with the corrected build settings.
 - Live checks returned 200 for Home, About, Contact, Terms, Across Borders, Showcases, Onboarding, Catalogue, Careers, sitemap, robots, `llms.txt`, `index.md` and the MCP server card. Live Markdown negotiation, the homepage Link header, and MCP initialize/tool-list calls passed.
 - Legacy `/index.html`, `/about/index.html`, `/careers.html`, `/onboarding/index.html` and `/across-borders/index.html` returned 301 redirects to clean URLs.
 
@@ -170,6 +171,7 @@ The worktree contained other modified and untracked files before this refinement
 - Automated generated-page audit passed for all 13 HTML files: unique titles under 60 characters, descriptions under 160 characters, exactly one H1, canonical URLs, valid JSON-LD and social image tags. The sitemap exactly matched the eight indexable pages.
 - Local and live HTTP checks covered HTML and Markdown responses, Link/Vary headers, clean routes, the MCP card, JSON-RPC initialization, tool discovery and a read-only tool call.
 - `npm audit --omit=dev` reported zero vulnerabilities. Lighthouse was not run, so no Lighthouse scores are claimed.
+- The Hostinger environment-variable list is empty; onboarding email delivery remains unavailable until the two Resend settings below are entered in hPanel.
 
 ### Manual follow-up
 
