@@ -1,8 +1,10 @@
 # Legacies Global website
 
-This is a static HTML, CSS and vanilla JavaScript site. Run `npm ci` followed by `npm run build`; the deployable site is emitted to `dist/`. The build expands the shared header, footer and head partials, renders the Showcase cards from `data/partners.json`, creates WebP image variants, and generates profile pages only for approved live partner records.
+This is a static HTML, CSS and vanilla JavaScript site with a small Express server for production routing and read-only agent endpoints. Run `npm ci` followed by `npm run build`; the deployable site is emitted to `dist/`. The build expands the shared header, footer and head partials, renders the Showcase cards from `data/partners.json`, creates WebP image variants, and generates profile pages only for approved live partner records.
 
 For a complete local preview with working clean URLs, navigation and server-backed form behavior, run `npm run preview` and open `http://127.0.0.1:4173/`. In VS Code, press F5 to start that preview and open it in Chrome. HTML pages opened directly from File Explorer now load their styles and local images too; direct `file://` previews are static, so form submissions still require the local preview server or a deployed endpoint.
+
+To run the production-style Node server locally, run `npm run build` and then `npm start`; it listens on `PORT` or `3000` by default. This server serves the built pages, clean URLs, the onboarding API, Markdown content negotiation and the read-only MCP endpoint. Hostinger deploys it as an Express Node.js app with `server.js` as its entry point and `dist/` as the built site directory.
 
 ## Publishing a partner profile in under five minutes
 
@@ -16,7 +18,15 @@ Legacies Showcases is a curated edit of exceptional pieces; Legacies Across Bord
 
 ## Configuration
 
-Copy `.env.example` into a local environment file for API development, then configure the real Resend values in the Vercel project. Never commit secrets. Review [MIGRATION.md](./MIGRATION.md) before changing DNS or moving off GitHub Pages.
+Copy `.env.example` into a local environment file for API development, then configure `RESEND_API_KEY` and `RESEND_FROM` in the hosting provider's environment settings. On Hostinger, set them in hPanel under the website's Node.js environment variables; on Vercel, use the project's environment-variable settings. Never commit secrets. Review [MIGRATION.md](./MIGRATION.md) before changing DNS or moving off GitHub Pages.
+
+## Agent-readable resources
+
+- `/llms.txt` summarizes the site and links its key pages.
+- `/index.md` is returned from the homepage when the request prefers `text/markdown`; the HTML response also advertises it with a `Link` header.
+- `/.well-known/mcp/server-card.json` describes the public read-only MCP service at `/api/mcp`.
+- `site.js` registers a read-only WebMCP overview tool when the browser exposes `navigator.modelContext`.
+- The Terms page is a draft and remains `noindex` until reviewed. No phone number or street address is published or invented.
 
 The onboarding country selector contains all 249 country and territory entries from ISO 3166-1. After a country is selected, its searchable city suggestions load from the locally bundled GeoNames-derived dataset; applicants can still type a city that is not listed. City suggestions cover populated places over 1,000 people and administrative seats down to PPLA3, rather than every village or settlement. Dataset attribution and licensing are included in `assets/data/cities/ATTRIBUTION.txt`.
 

@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /onboarding/thank-you
+Content-Signal: search=yes, ai-train=no
 
 Sitemap: https://legacies.global/sitemap.xml

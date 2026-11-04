@@ -138,4 +138,44 @@ The worktree contained other modified and untracked files before this refinement
 - Showcase cards and Across Borders images remain explicit placeholders until approved maker content and licensed images are available.
 - The onboarding endpoint and profile/social details still need the real production values described in the project configuration and SEO checklist.
 - A `file://` page is not a full website server. Clean routes, server functions, and form submissions should be reviewed through `npm run preview` or a deployment.
-- The updated build is not live at `legacies.global` until the generated `dist/` output is deployed.
+- That earlier refinement review predated the Hostinger publish; the current deployment status is recorded below.
+
+## 4 November 2026 — Agent readiness and Hostinger publish
+
+### Changes made
+
+- Added the requested `Content-Signal: search=yes, ai-train=no` directive and removed the robots exclusion for the noindex thank-you page so crawlers can see its `noindex` metadata.
+- Expanded `sitemap.xml` to include all eight indexable pages, with `lastmod` values. Draft legal/privacy pages, the thank-you page, stories scaffolding and the 404 page remain out of the sitemap because they are `noindex`.
+- Added `llms.txt` and an `index.md` representation of the existing homepage copy. The homepage serves Markdown for `Accept: text/markdown`; HTML responses advertise the Markdown and `llms.txt` resources in an RFC 8288 `Link` header. The Vercel configuration has matching response handling.
+- Added `/about`, `/contact` and `/terms`. About and Contact are indexable. Terms is explicitly a draft, remains `noindex`, and must be reviewed before it is treated as final legal text.
+- Added AboutPage, ContactPage, Article and Service structured data, while retaining the site's Organization, WebSite, BreadcrumbList and onboarding FAQPage markup. No Product markup was added because the Showcase entries are placeholders, not actual offers.
+- Kept telephone and street address out of structured data because the owner asked not to publish either. Contact schema provides the public email address instead.
+- Added a public read-only MCP JSON-RPC endpoint at `/api/mcp`, with `initialize`, `tools/list` and two tools: `get_business_overview` and `list_public_pages`. Added the server card at `/.well-known/mcp/server-card.json`.
+- Added feature-detected WebMCP registration in `site.js`; it registers a read-only overview tool only in browsers that expose `navigator.modelContext`.
+- Added an Express production server for Hostinger. It serves the generated pages, permanent clean-URL redirects, the existing `/api/apply` handler, Markdown negotiation and the MCP endpoint. Added the runtime dependency and `npm start`.
+- Linked About, Contact and Terms in the shared footer and routed the navigation Contact link to `/contact`. No homepage wording was changed.
+- Registered the Hostinger MCP server in the VS Code user configuration with `npx -y @hostinger/mcp@latest`; the configuration contains no credentials.
+
+### Hostinger deployment
+
+- Confirmed `legacies.global` is an enabled Hostinger Node.js website and checked its document root before replacing the existing site files. Kept DNS and mail records unchanged.
+- Built and uploaded a source archive that excluded `dist`, `node_modules`, `.git`, `.hostinger` and environment/credential files. Hostinger used Node.js 22, Express, `server.js`, `npm run build` and `dist/`.
+- Hostinger build `01a1a811-582a-7357-9a22-45ca4dfd6e61` completed and published successfully: 13 pages generated, 0 live Showcase profiles, 0 npm vulnerabilities. The Hostinger server and CDN cache was cleared after publish.
+- Live checks returned 200 for Home, About, Contact, Terms, Across Borders, Showcases, Onboarding, Catalogue, Careers, sitemap, robots, `llms.txt`, `index.md` and the MCP server card. Live Markdown negotiation, the homepage Link header, and MCP initialize/tool-list calls passed.
+- Legacy `/index.html`, `/about/index.html`, `/careers.html`, `/onboarding/index.html` and `/across-borders/index.html` returned 301 redirects to clean URLs.
+
+### Verification
+
+- `npm run build` passed; `node --check` passed for `server.js`, `api/mcp.js`, `site.js` and the build script.
+- Automated generated-page audit passed for all 13 HTML files: unique titles under 60 characters, descriptions under 160 characters, exactly one H1, canonical URLs, valid JSON-LD and social image tags. The sitemap exactly matched the eight indexable pages.
+- Local and live HTTP checks covered HTML and Markdown responses, Link/Vary headers, clean routes, the MCP card, JSON-RPC initialization, tool discovery and a read-only tool call.
+- `npm audit --omit=dev` reported zero vulnerabilities. Lighthouse was not run, so no Lighthouse scores are claimed.
+
+### Manual follow-up
+
+1. In hPanel, set `RESEND_API_KEY` and `RESEND_FROM` in the website's Node.js environment variables to enable onboarding email delivery. Keep both values out of Git and source files.
+2. Replace the social profile placeholders in the shared footer and the Organization `sameAs` data with the verified accounts.
+3. Replace `REPLACE_WITH_INDEXNOW_KEY.txt` with the actual IndexNow key and matching filename before submitting URLs.
+4. Have the Terms and Privacy drafts reviewed and completed before removing their `noindex` directives.
+5. Add the domain to Google Search Console using its DNS verification flow and import it into Bing Webmaster Tools if desired.
+6. Telephone and street address remain intentionally unpublished. Add them only if that policy changes and the owner supplies verified details.

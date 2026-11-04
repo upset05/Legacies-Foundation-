@@ -60,3 +60,33 @@ document.querySelectorAll(".mobile-menu").forEach(menu => {
     link.addEventListener("click", () => { menu.open = false; });
   });
 });
+
+const modelContext = navigator.modelContext;
+if (modelContext && typeof modelContext.registerTool === "function") {
+  try {
+    Promise.resolve(modelContext.registerTool({
+      name: "legacies_global_overview",
+      description: "Return public information about Legacies Global and links to its website pages.",
+      inputSchema: { type: "object", properties: {}, additionalProperties: false },
+      execute: async () => ({
+        name: "Legacies Global",
+        website: "https://legacies.global/",
+        email: "legacies@legacies.global",
+        focus: "Artisan design, cultural innovation, considered fashion editions and editorial collaboration.",
+        pages: [
+          "https://legacies.global/about",
+          "https://legacies.global/across-borders",
+          "https://legacies.global/showcases",
+          "https://legacies.global/catalogue",
+          "https://legacies.global/onboarding",
+          "https://legacies.global/contact",
+        ],
+        note: "No public telephone number or street address is published.",
+      }),
+    })).catch(error => {
+      console.warn("Unable to register the Legacies Global WebMCP tool.", error);
+    });
+  } catch (error) {
+    console.warn("Unable to register the Legacies Global WebMCP tool.", error);
+  }
+}

@@ -66,6 +66,7 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://legacies.global/#organization",
     "name": "Legacies Global",
     "url": "https://legacies.global/",
     "logo": "https://legacies.global/assets/img/legacies-global-logo.png",
@@ -92,9 +93,47 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": "https://legacies.global/#website",
     "name": "Legacies Global",
     "url": "https://legacies.global/",
     "description": "Sustainable artisan fashion, cultural design and considered collections by Legacies Global."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://legacies.global/#artisan-partnerships",
+        "name": "Artisan designer partnerships",
+        "serviceType": "Creative and fashion collaboration",
+        "provider": { "@id": "https://legacies.global/#organization" },
+        "url": "https://legacies.global/onboarding",
+        "areaServed": "Worldwide",
+        "description": "Collaborative opportunities for artisan designers and cultural innovators, shaped around each partner's practice."
+      },
+      {
+        "@type": "Service",
+        "@id": "https://legacies.global/#curated-editions",
+        "name": "Curated fashion editions",
+        "serviceType": "Fashion design and editorial curation",
+        "provider": { "@id": "https://legacies.global/#organization" },
+        "url": "https://legacies.global/catalogue",
+        "areaServed": "Worldwide",
+        "description": "Considered fashion editions developed with designers and ateliers."
+      },
+      {
+        "@type": "Service",
+        "@id": "https://legacies.global/#cross-border-stories",
+        "name": "Cross-border design stories",
+        "serviceType": "Fashion storytelling and cultural editorial",
+        "provider": { "@id": "https://legacies.global/#organization" },
+        "url": "https://legacies.global/across-borders",
+        "areaServed": "Worldwide",
+        "description": "Editorial storytelling that brings maker-approved context to design, craft and place."
+      }
+    ]
   }
   </script>
   <!-- SITE_HEAD_SHARED -->
