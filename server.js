@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import applicationHandler from "./api/apply.js";
+import contactHandler from "./api/contact.js";
 import mcpHandler from "./api/mcp.js";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -14,6 +15,7 @@ app.disable("x-powered-by");
 app.use(express.json({ limit: "64kb" }));
 app.use(express.urlencoded({ extended: false, limit: "64kb" }));
 app.all("/api/apply", applicationHandler);
+app.all("/api/contact", contactHandler);
 app.all("/api/mcp", mcpHandler);
 
 app.use((request, response, next) => {

@@ -119,8 +119,7 @@ export default async function handler(request, response) {
     return respond(response, 400, { ok: false, error: "Please check that all required fields are complete and valid." });
   }
 
-  const forwardedIp = request.headers["x-real-ip"] || request.headers["x-forwarded-for"]?.split(",")[0]?.trim();
-  const ip = typeof forwardedIp === "string" && forwardedIp.length <= 100 ? forwardedIp : "unknown";
+  const ip = request.socket?.remoteAddress || request.connection?.remoteAddress || "unknown";
   if (!allowSubmission(ip, now)) {
     return respond(response, 429, { ok: false, error: "Too many applications were submitted from this connection. Please try again later." });
   }

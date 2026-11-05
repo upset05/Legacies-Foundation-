@@ -6,11 +6,20 @@ For a complete local preview with working clean URLs and navigation, run `npm ru
 
 ## Hostinger static deployment
 
-The website's document root on Hostinger is `/domains/legacies.global/public_html` (the exact account path may differ). The generated `public_html/` folder in this repository is the static deployment bundle. Its contents (`index.html`, `.htaccess`, `assets/`, `api/`, and page folders) must sit directly in the Hostinger web root—not inside `public_html/public_html/`.
+The website's document root is Hostinger's `/domains/legacies.global/public_html` (the exact account path may differ). The generated `public_html/` folder is the deploy bundle: its `index.html`, `.htaccess`, `assets/`, `api/` and route folders belong directly in the document root.
 
-If Git deployment has a **source subfolder/output directory** option, select the repository's `public_html/` folder and deploy its contents to the domain's document root. If Git deployment only has a **destination directory** field, leave that at the web root/default; that field does not select a source subfolder. In that case, deploy the contents of the generated bundle using File Manager or CI, or use a branch whose repository root contains the generated bundle. Do not set the destination to `public_html` when the domain root is already `public_html`, as that creates an extra nesting level.
+Hostinger's Git deployment directory is a **destination** folder, not a source-subfolder selector. Deploy the contents of the bundle from a branch where they are at the repository root. To create or refresh that branch after building on `main`:
 
-The `.htaccess` file handles HTTPS and non-www redirects, clean URLs, PHP endpoint routing and the custom 404 page. The application and contact forms use `mail()` to send to `legacies@legacies.global`; Hostinger must have PHP and outgoing mail enabled. Verify the sending mailbox and its SPF/DKIM setup in hPanel if messages are not delivered. No mail password or API secret is stored in this repository.
+```powershell
+npm run build
+$bundleCommit = git subtree split --prefix=public_html main
+git branch -f hostinger-static $bundleCommit
+git push origin hostinger-static --force
+```
+
+In hPanel, set Git auto-deployment to branch `hostinger-static` and the document-root destination (leave the directory blank). Do not deploy the full source repository as a static site: its root contains build templates and project files. Do not put the bundle in an additional nested `public_html/public_html/`.
+
+The static bundle uses `.htaccess` for HTTPS/non-www redirects, clean URLs, PHP form routes, and the custom 404. The forms send with PHP `mail()` to `legacies@legacies.global`; enable PHP and configure the sending mailbox and SPF/DKIM in hPanel. No mail password or API secret is stored in this repository.
 
 ## Publishing a partner profile in under five minutes
 

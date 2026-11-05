@@ -1,6 +1,6 @@
 # Legacies Global site review report
 
-**Review date:** 2 November 2026
+**Review date:** 5 November 2026
 
 ## Summary
 
@@ -21,10 +21,10 @@ The shared navigation and footer remain consistent, and the original dark, edito
 
 ### Changes made
 
-- The build now emits a committed `public_html/` deployment folder alongside `dist/`. Every HTML page in it has the shared head, navigation and footer expanded before deploy, and all page-level CSS, script and image references resolve from the site root.
+- The build emits a committed `public_html/` deployment folder alongside `dist/`. Every HTML page in it has the shared head, navigation and footer expanded before deploy, and all page-level CSS, script and image references resolve from the site root.
 - Added `.htaccess` rules for HTTPS, non-www redirects, clean URLs, `/api/apply`, `/api/contact`, `/api/mcp`, Markdown homepage negotiation, security headers and the custom 404 document.
 - Removed `vercel.json`; Apache behavior is now defined by `.htaccess`.
-- Added PHP application and contact endpoints with input validation, honeypot checks and a file-backed per-IP rate limit. They use the host's PHP `mail()` transport to send to `legacies@legacies.global`. The existing public, read-only MCP route also has a PHP implementation for static hosting.
+- Added PHP application and contact endpoints with input validation, honeypot checks and a file-backed per-IP rate limit. The plain-static Hostinger bundle uses PHP `mail()` to send to `legacies@legacies.global`. The Express/Vercel path also has a Node.js contact handler; it requires `RESEND_API_KEY` and `RESEND_FROM` configured outside source control.
 - Replaced the “F” favicon with the Legacies logo artwork and wordmark; the build generates a PNG-backed ICO from the actual local logo.
 - Reworked Contact into a desktop two-column support-email/enquiry layout that stacks on mobile. The form collects name, email, enquiry category and message.
 - Standardized the shared desktop navigation to the compact 900px Home pill size.
@@ -32,15 +32,20 @@ The shared navigation and footer remain consistent, and the original dark, edito
 ### Hostinger deployment instructions
 
 - The web document root is Hostinger's `public_html` directory. Put the **contents** of this repository's generated `public_html/` folder directly inside it; do not create an extra nested `public_html/public_html/`.
-- If Git deployment has a source subfolder/output-directory selector, choose repository `public_html/` and publish its *contents* to the document root. If the Git UI only provides a destination directory, that field does not select a source subfolder: use the web root as the destination and deploy the bundle contents via File Manager/CI, or use a branch whose root contains the bundle. Do not create a nested `public_html/public_html/`.
-- Hostinger must run PHP and permit outgoing `mail()`; the sender mailbox and domain SPF/DKIM settings need to be configured in hPanel for reliable delivery. No mail credentials are included in source.
+- The Git directory setting is a destination, not a source-folder selector. Build `public_html/`, publish its contents at the root of a `hostinger-static` branch, then configure Git auto-deployment to that branch with the destination directory left blank. This avoids deploying the source templates or creating a nested `public_html/public_html/`.
+- The website's document root is `/domains/legacies.global/public_html` (account path may vary). Hostinger must run PHP and permit outgoing `mail()`; the sender mailbox and domain SPF/DKIM settings need to be configured in hPanel. No mail credentials are included in source.
 
 ### Verification
 
 - `npm run build` produced 13 complete pages in `dist/` and `public_html/`.
 - A generated-output audit found the shared header, nav and footer on all 13 pages, no remaining partial markers, no missing root-resolved asset or route references, and no non-root relative `href`, `src` or `srcset` paths.
-- Browser checks of the local generated site confirmed the shared navigation and footer on every route, correct Contact form layout at desktop and mobile widths, and no missing local assets or HTTP 404 responses.
+- A local Playwright check of Contact confirmed the assembled header/navigation/footer, one H1, a usable form, and no console errors, failed requests, or broken images on reload. A generated-output audit found no missing local assets.
 - PHP CLI is not installed in the local environment, so PHP syntax lint and live mail delivery could not be exercised here. The PHP endpoints require verification on the Hostinger PHP runtime.
+
+### Hostinger follow-up
+
+- The live site was still set to Node.js/Express with Git deploying the repository root. Its `/api/contact` route returned 404 and the site's Node environment had no Resend variables. The website itself served Home and Contact correctly.
+- The static bundle is ready; to make it the live no-Node deployment, deploy the root contents of `public_html/` from the `hostinger-static` branch and set Hostinger Git auto-deploy to that branch. Keep the destination at the document root. Verify PHP mail delivery with a real test enquiry after checking hPanel mail configuration.
 
 ## Changes made
 
