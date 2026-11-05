@@ -1,6 +1,6 @@
 # GitHub Pages to Vercel migration
 
-The site build writes the deployable static site to `dist/`. Vercel is configured with the `Other` framework preset and `npm run build`.
+The site build writes the deployable static site to `dist/` and the Hostinger-ready static bundle to `public_html/`. The Hostinger bundle uses PHP for its forms and `.htaccess` for Apache routing; it does not need Node at runtime. Vercel deployment remains a separate setup and does not use `.htaccess`.
 
 ## Plan and cutover
 
@@ -20,7 +20,7 @@ The Vercel function at `api/apply.js` sends application details through Resend t
 
 ## Commercial-plan note
 
-Vercel Hobby is restricted to personal, non-commercial use. A fashion brand website is commercial, so plan for **Vercel Pro** or choose a free host without that restriction, such as Cloudflare Pages or Netlify. The supplied Vercel function and `vercel.json` are specific to the Vercel route.
+Vercel Hobby is restricted to personal, non-commercial use. A fashion brand website is commercial, so plan for **Vercel Pro** or choose a free host without that restriction, such as Cloudflare Pages or Netlify. The supplied Vercel function and configuration are specific to the Vercel route. Hostinger instead uses the PHP endpoints in `public_html/api/` and Apache rules in `.htaccess`.
 
 ## After launch
 

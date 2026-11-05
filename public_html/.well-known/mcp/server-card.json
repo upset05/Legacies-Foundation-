@@ -1,0 +1,20 @@
+{
+  "name": "Legacies Global Public Information",
+  "version": "1.0.0",
+  "protocolVersion": "2025-03-26",
+  "endpoint": "https://legacies.global/api/mcp",
+  "transport": {
+    "type": "streamable-http",
+    "url": "https://legacies.global/api/mcp"
+  },
+  "description": "Public, read-only tools for information about Legacies Global and its public website pages.",
+  "capabilities": {
+    "tools": {
+      "listChanged": false,
+      "names": ["get_business_overview", "list_public_pages"]
+    },
+    "resources": false,
+    "prompts": false,
+    "authentication": "none"
+  }
+}

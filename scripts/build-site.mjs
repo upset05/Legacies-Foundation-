@@ -32,6 +32,7 @@ const staticFiles = [
   "llms.txt",
   "index.md",
   ".well-known",
+  ".htaccess",
   "favicon.ico",
   "favicon.svg",
   "apple-touch-icon.png",
@@ -97,6 +98,13 @@ function ensureStylesheet(html, relativePath) {
   }
   if (/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["'](?:\/|(?:\.\.\/)*)styles\.css["']/i.test(html)) return html;
   return html.replace("</head>", '  <link rel="stylesheet" href="/styles.css">\n</head>');
+}
+
+function useSiteRootAssetPaths(html) {
+  return html
+    .replace(/((?:href|src|srcset)=["'])\.\.\//g, "$1/")
+    .replace(/((?:href|src|srcset)=["'])styles\.css(["'])/g, "$1/styles.css$2")
+    .replace(/((?:href|src|srcset)=["'])assets\//g, "$1/assets/");
 }
 
 function escapeHtml(value) {
@@ -199,6 +207,10 @@ for (const item of [...routes, ...staticFiles, "data/partners.json", "REPLACE_WI
   const source = path.join(root, item);
   if (await exists(source)) await cp(source, path.join(output, item), { recursive: true });
 }
+for (const item of ["api/apply.php", "api/contact.php", "api/mcp.php", "api/_shared.php"]) {
+  const source = path.join(root, item);
+  if (await exists(source)) await cp(source, path.join(output, item), { recursive: true });
+}
 
 const partialsDirectory = path.join(root, "partials");
 const sharedHead = await readFile(path.join(partialsDirectory, "shared-head.html"), "utf8");
@@ -247,6 +259,7 @@ for (const sourcePath of htmlPaths) {
     .replace("<!-- SITE_FOOTER -->", footerPartial)
     .replace("<!-- SITE_SCRIPT -->", '<script src="/site.js" defer></script>');
   html = html.replace("<!-- COUNTRY_OPTIONS -->", countryOptions);
+  html = useSiteRootAssetPaths(html);
   html = ensureStylesheet(html, relativePath);
   html = addFilePreviewSupport(html, relativePath);
   if (html.includes("<!-- PARTNER_CARDS -->")) {
@@ -264,7 +277,7 @@ for (const partner of partnerData.partners) {
     .replace("<!-- SITE_FOOTER -->", footerPartial)
     .replace("<!-- SITE_SCRIPT -->", '<script src="/site.js" defer></script>');
   const profileRelativePath = path.join("showcases", partner.slug, "index.html");
-  const styledPage = addFilePreviewSupport(ensureStylesheet(page), profileRelativePath);
+  const styledPage = addFilePreviewSupport(useSiteRootAssetPaths(ensureStylesheet(page)), profileRelativePath);
   const destination = path.join(output, "showcases", partner.slug, "index.html");
   await mkdir(path.dirname(destination), { recursive: true });
   await writeFile(destination, styledPage);
@@ -289,4 +302,24 @@ if (await exists(imageDirectory)) {
   }
 }
 
-console.log(`Built ${htmlPaths.length} pages and ${generatedProfiles.length} live partner profiles in dist/.`);
+const faviconPng = await sharp(path.join(root, "assets", "img", "legacies-global-logo.png"))
+  .resize(64, 64, { fit: "contain" })
+  .png()
+  .toBuffer();
+const faviconHeader = Buffer.alloc(22);
+faviconHeader.writeUInt16LE(0, 0);
+faviconHeader.writeUInt16LE(1, 2);
+faviconHeader.writeUInt16LE(1, 4);
+faviconHeader.writeUInt8(64, 6);
+faviconHeader.writeUInt8(64, 7);
+faviconHeader.writeUInt16LE(1, 10);
+faviconHeader.writeUInt16LE(32, 12);
+faviconHeader.writeUInt32LE(faviconPng.length, 14);
+faviconHeader.writeUInt32LE(faviconHeader.length, 18);
+await writeFile(path.join(output, "favicon.ico"), Buffer.concat([faviconHeader, faviconPng]));
+
+const deployDirectory = path.join(root, "public_html");
+await rm(deployDirectory, { recursive: true, force: true });
+await cp(output, deployDirectory, { recursive: true });
+
+console.log(`Built ${htmlPaths.length} pages and ${generatedProfiles.length} live partner profiles in dist/ and public_html/.`);

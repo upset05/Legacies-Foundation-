@@ -8,6 +8,40 @@ This update addresses the crowded page presentation, blurred visual placeholders
 
 The shared navigation and footer remain consistent, and the original dark, editorial visual direction is retained.
 
+## Hostinger static deployment and contact update
+
+### What was broken
+
+- Hostinger was importing the repository source files directly. The shared header, navigation and footer exist as build-time partial markers in those sources, so a raw-file deployment left those areas missing.
+- Source pages included relative stylesheet, image and script URLs. Those URLs can resolve against the wrong path on clean, nested routes.
+- The previous `vercel.json` described Vercel build and routing behavior; it does not configure Apache on Hostinger.
+- The browser's ICO favicon contained a standalone “F” rather than the Legacies wordmark.
+- The Contact page offered email details but did not provide the requested enquiry form.
+- The shared desktop navigation allowed the page stylesheet's wider pill dimensions to differ from the compact Home navigation.
+
+### Changes made
+
+- The build now emits a committed `public_html/` deployment folder alongside `dist/`. Every HTML page in it has the shared head, navigation and footer expanded before deploy, and all page-level CSS, script and image references resolve from the site root.
+- Added `.htaccess` rules for HTTPS, non-www redirects, clean URLs, `/api/apply`, `/api/contact`, `/api/mcp`, Markdown homepage negotiation, security headers and the custom 404 document.
+- Removed `vercel.json`; Apache behavior is now defined by `.htaccess`.
+- Added PHP application and contact endpoints with input validation, honeypot checks and a file-backed per-IP rate limit. They use the host's PHP `mail()` transport to send to `legacies@legacies.global`. The existing public, read-only MCP route also has a PHP implementation for static hosting.
+- Replaced the “F” favicon with the Legacies logo artwork and wordmark; the build generates a PNG-backed ICO from the actual local logo.
+- Reworked Contact into a desktop two-column support-email/enquiry layout that stacks on mobile. The form collects name, email, enquiry category and message.
+- Standardized the shared desktop navigation to the compact 900px Home pill size.
+
+### Hostinger deployment instructions
+
+- The web document root is Hostinger's `public_html` directory. Put the **contents** of this repository's generated `public_html/` folder directly inside it; do not create an extra nested `public_html/public_html/`.
+- If Git deployment has a source subfolder/output-directory selector, choose repository `public_html/` and publish its *contents* to the document root. If the Git UI only provides a destination directory, that field does not select a source subfolder: use the web root as the destination and deploy the bundle contents via File Manager/CI, or use a branch whose root contains the bundle. Do not create a nested `public_html/public_html/`.
+- Hostinger must run PHP and permit outgoing `mail()`; the sender mailbox and domain SPF/DKIM settings need to be configured in hPanel for reliable delivery. No mail credentials are included in source.
+
+### Verification
+
+- `npm run build` produced 13 complete pages in `dist/` and `public_html/`.
+- A generated-output audit found the shared header, nav and footer on all 13 pages, no remaining partial markers, no missing root-resolved asset or route references, and no non-root relative `href`, `src` or `srcset` paths.
+- Browser checks of the local generated site confirmed the shared navigation and footer on every route, correct Contact form layout at desktop and mobile widths, and no missing local assets or HTTP 404 responses.
+- PHP CLI is not installed in the local environment, so PHP syntax lint and live mail delivery could not be exercised here. The PHP endpoints require verification on the Hostinger PHP runtime.
+
 ## Changes made
 
 ### Home entrance and galaxy effect

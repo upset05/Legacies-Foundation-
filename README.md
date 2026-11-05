@@ -1,10 +1,16 @@
 # Legacies Global website
 
-This is a static HTML, CSS and vanilla JavaScript site with a small Express server for production routing and read-only agent endpoints. Run `npm ci` followed by `npm run build`; the deployable site is emitted to `dist/`. The build expands the shared header, footer and head partials, renders the Showcase cards from `data/partners.json`, creates WebP image variants, and generates profile pages only for approved live partner records.
+This is a static HTML, CSS and vanilla JavaScript site. Run `npm ci` followed by `npm run build` to assemble the shared header, navigation, footer and metadata into every page, render Showcase cards, create WebP image variants and prepare both `dist/` and the committed, deploy-ready `public_html/` folder. `public_html/` contains complete static pages and their assets plus small PHP endpoints; it does not need Node.js, Express or a server-side build step at runtime.
 
-For a complete local preview with working clean URLs, navigation and server-backed form behavior, run `npm run preview` and open `http://127.0.0.1:4173/`. In VS Code, press F5 to start that preview and open it in Chrome. HTML pages opened directly from File Explorer now load their styles and local images too; direct `file://` previews are static, so form submissions still require the local preview server or a deployed endpoint.
+For a complete local preview with working clean URLs and navigation, run `npm run preview` and open `http://127.0.0.1:4173/`. In VS Code, press F5 to start that preview and open it in Chrome. Direct `file://` previews remain static; PHP forms require a PHP-enabled web server.
 
-To run the production-style Node server locally, run `npm run build` and then `npm start`; it listens on `PORT` or `3000` by default. This server serves the built pages, clean URLs, the onboarding API, Markdown content negotiation and the read-only MCP endpoint. Hostinger deploys it as an Express Node.js app with `server.js` as its entry point and `dist/` as the built site directory.
+## Hostinger static deployment
+
+The website's document root on Hostinger is `/domains/legacies.global/public_html` (the exact account path may differ). The generated `public_html/` folder in this repository is the static deployment bundle. Its contents (`index.html`, `.htaccess`, `assets/`, `api/`, and page folders) must sit directly in the Hostinger web root—not inside `public_html/public_html/`.
+
+If Git deployment has a **source subfolder/output directory** option, select the repository's `public_html/` folder and deploy its contents to the domain's document root. If Git deployment only has a **destination directory** field, leave that at the web root/default; that field does not select a source subfolder. In that case, deploy the contents of the generated bundle using File Manager or CI, or use a branch whose repository root contains the generated bundle. Do not set the destination to `public_html` when the domain root is already `public_html`, as that creates an extra nesting level.
+
+The `.htaccess` file handles HTTPS and non-www redirects, clean URLs, PHP endpoint routing and the custom 404 page. The application and contact forms use `mail()` to send to `legacies@legacies.global`; Hostinger must have PHP and outgoing mail enabled. Verify the sending mailbox and its SPF/DKIM setup in hPanel if messages are not delivered. No mail password or API secret is stored in this repository.
 
 ## Publishing a partner profile in under five minutes
 
@@ -18,7 +24,7 @@ Legacies Showcases is a curated edit of exceptional pieces; Legacies Across Bord
 
 ## Configuration
 
-Copy `.env.example` into a local environment file for API development, then configure `RESEND_API_KEY` and `RESEND_FROM` in the hosting provider's environment settings. On Hostinger, set them in hPanel under the website's Node.js environment variables; on Vercel, use the project's environment-variable settings. Never commit secrets. Review [MIGRATION.md](./MIGRATION.md) before changing DNS or moving off GitHub Pages.
+Node is used only for the optional local assembly step; no Node process or Express package is needed on Hostinger at runtime. Review [MIGRATION.md](./MIGRATION.md) before changing DNS or moving off GitHub Pages.
 
 ## Agent-readable resources
 
