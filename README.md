@@ -24,12 +24,16 @@ The static bundle uses `.htaccess` for HTTPS/non-www redirects, clean URLs, PHP 
 ## Publishing a partner profile in under five minutes
 
 1. Get the maker's written approval for their name, location, craft, story, collaboration description and each image/alt-text pair.
-2. Add approved gallery files to `assets/img/` and create an entry in `data/partners.json` with `status: "live"`, a unique lowercase `slug`, `profileType` (`Person` or `Organization`), `featuredPieceName`, `name`, `location`, `craft`, `collectionName`, `seoTitle`, `seoDescription`, `story`, `collaborationDetails`, `lastmod` and a `gallery` array (`src`, `alt`, `width`, `height`, and optional `caption`).
+2. Add approved gallery files to `assets/img/` and create an entry in `data/partners.json` with `status: "live"`, a unique lowercase `slug`, ISO 3166-1 alpha-2 `countryCode`, `profileType` (`Person` or `Organization`), `featuredPieceName`, `name`, `location`, `craft`, `collectionName`, `seoTitle`, `seoDescription`, `story`, `collaborationDetails`, `lastmod` and a `gallery` array (`src`, `alt`, `width`, `height`, and optional `caption`).
 3. Keep the story at 150 words or more. The build rejects short stories, missing image alt text/dimensions, invalid slugs and overlong SEO metadata.
 4. Run `npm run build` and review `dist/showcases/<slug>/`, the generated Showcase card and the sitemap URL.
 5. Commit the approved content and assets, deploy, and confirm the canonical URL, structured data and image rights.
 
 Legacies Showcases is a curated edit of exceptional pieces; Legacies Across Borders gives audiences context to encounter cultures and makers through work from different places. The current dataset contains three clearly marked featured-piece placeholders only. No partner identity or individual profile is published.
+
+## Editorial photography
+
+The Legacies Atlas uses two locally hosted Pexels photographs as illustrative editorial references, not as images of Legacies partners or collections. They are credited on the page and may be used on websites under the [Pexels License](https://www.pexels.com/license/): [traditional attire portrait](https://www.pexels.com/photo/man-in-traditional-attire-on-a-sunny-street-39634272/) and [colorful traditional clothing portrait](https://www.pexels.com/photo/smiling-woman-in-traditional-clothes-on-street-10698019/).
 
 ## Configuration
 

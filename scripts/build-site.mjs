@@ -13,6 +13,7 @@ const routes = [
   "index.html",
   "careers.html",
   "catalogue.html",
+  "atlas",
   "across-borders",
   "showcases",
   "onboarding",
@@ -173,6 +174,9 @@ function renderGallery(images) {
 function renderLiveProfile(template, partner) {
   const storyWords = partner.story.trim().split(/\s+/).length;
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(partner.slug)) throw new Error(`Invalid profile slug: ${partner.slug}`);
+  if (!countries.some(country => country.code === partner.countryCode)) {
+    throw new Error(`Live profile ${partner.slug} needs an ISO 3166-1 alpha-2 countryCode for The Legacies Atlas.`);
+  }
   if (!partner.seoTitle || partner.seoTitle.length >= 60 || !partner.seoDescription || partner.seoDescription.length >= 160) {
     throw new Error(`Live profile ${partner.slug} needs a title under 60 characters and a description under 160 characters.`);
   }
