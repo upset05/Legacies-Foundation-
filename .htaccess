@@ -1,0 +1,49 @@
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+AddType text/markdown .md
+AddType image/x-icon .ico
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\.legacies\.global$ [NC]
+  RewriteRule ^ https://legacies.global%{REQUEST_URI} [R=301,L,NE]
+
+  RewriteRule ^api/_shared\.php$ - [F,L]
+  RewriteRule ^api/apply/?$ api/apply.php [L]
+  RewriteRule ^api/contact/?$ api/contact.php [L]
+  RewriteRule ^api/mcp/?$ api/mcp.php [L]
+
+  RewriteCond %{HTTP:Accept} text/markdown [NC]
+  RewriteRule ^$ index.md [L,T=text/markdown]
+
+  RewriteRule ^(.*?)/?index\.html$ /$1 [R=301,L,NE]
+  RewriteRule ^(.+)\.html$ /$1 [R=301,L,NE]
+
+  RewriteCond %{REQUEST_URI} !^/$
+  RewriteCond %{REQUEST_URI} .+/$
+  RewriteRule ^(.+)/$ /$1 [R=301,L,NE]
+
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^(.+?)/?$ $1/index.html [END]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+?)/?$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/assets/#"
+  Header set Link "</llms.txt>; rel=\"describedby\", </index.md>; rel=\"alternate\"; type=\"text/markdown\"" env=is_homepage
+  Header set Vary "Accept" env=is_homepage
+</IfModule>
+
+<IfModule mod_setenvif.c>
+  SetEnvIf Request_URI "^/$" is_homepage
+</IfModule>

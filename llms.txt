@@ -1,0 +1,29 @@
+# Legacies Global
+
+> Legacies Global is a fashion platform connecting artisan designers and cultural innovators with audiences and opportunities across borders. Its editorial approach centres maker-led context, considered curation and clear collaboration.
+
+The site shares information about sustainable artisan fashion, creative practice, curated fashion editions and potential cross-border fashion collaboration. Descriptions of makers and cultural references should not be treated as a substitute for the perspective of the people involved.
+
+## Key pages
+- [Home](https://legacies.global/): the Legacies Global platform and its focus.
+- [About](https://legacies.global/about): purpose, principles and editorial approach.
+- [Across Borders](https://legacies.global/across-borders): how design, makers and context meet across locations.
+- [Showcases](https://legacies.global/showcases): featured artisan designers and collections; placeholder cards are illustrative, not partner claims.
+- [Catalogue](https://legacies.global/catalogue): curated fashion editions.
+- [Onboarding](https://legacies.global/onboarding): partner criteria, review process and application.
+- [Careers](https://legacies.global/careers): opportunities and information for prospective collaborators.
+- [Contact](https://legacies.global/contact): general and partnership enquiries.
+- [Terms of use](https://legacies.global/terms): draft notice, noindex and awaiting legal review.
+
+## Contact
+Email: legacies@legacies.global
+
+No public telephone number or street address is published. Social profile links currently contain placeholders and should not be treated as verified accounts.
+
+## Machine-readable resources
+- [Sitemap](https://legacies.global/sitemap.xml)
+- [Homepage in Markdown](https://legacies.global/index.md)
+- [MCP server card](https://legacies.global/.well-known/mcp/server-card.json)
+- [Public read-only MCP endpoint](https://legacies.global/api/mcp)
+
+The MCP service exposes read-only business overview and public page-list tools. It does not accept applications, publish private data or claim live inventory.
